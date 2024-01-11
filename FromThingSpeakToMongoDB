@@ -1,0 +1,51 @@
+import pymongo
+from pymongo import MongoClient
+import requests
+import time
+from datetime import datetime
+
+# ThingSpeak Parameters
+thingspeak_channel_id = "********"
+thingspeak_read_api_key = "********"
+
+# MongoDB Parameters
+mongodb_uri = "mongodb+srv://jekjelis:Zeliboba25@cluster0.9oeijom.mongodb.net/"
+
+# Connect to MongoDB
+client = MongoClient(mongodb_uri)
+db = client.Exjobb
+collection = db.HealthData
+
+while True:
+    # Query data from ThingSpeak
+    thingspeak_url = f"https://api.thingspeak.com/channels/{thingspeak_channel_id}/feeds.json"
+    params = {
+        "api_key": thingspeak_read_api_key,
+        "results": 5
+    }
+
+    response = requests.get(thingspeak_url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        if "feeds" in data and data["feeds"]:
+            for feed in data["feeds"]:
+                spo2 = float(feed["field1"])  #  SpO2
+                pulse_rate = float(feed["field2"])  #  PulseRate
+                timestamp = datetime.strptime(feed["created_at"], "%Y-%m-%dT%H:%M:%SZ")
+
+                document = {
+                    "SpO2": spo2,
+                    "PulseRate": pulse_rate,
+                    "timestamp": timestamp
+                }
+
+                result = collection.insert_one(document)
+                print(f"Data successfully saved in MongoDB with _id: {result.inserted_id}")
+                print(f"SpO2: {spo2}, PulseRate: {pulse_rate}, Timestamp: {timestamp}")
+        else:
+            print("Data not found in ThingSpeak")
+    else:
+        print("Error fetching data from ThingSpeak")
+
+    time.sleep(15)
