@@ -1,0 +1,49 @@
+# Health Sensor Data Integration
+
+This project combines sensor data from a MAX30100 Pulse Oximeter with wireless connectivity to ThingSpeak and MongoDB for monitoring and storage.
+
+## Arduino Code
+
+### Requirements:
+- Arduino IDE
+- MAX30100 library
+- WiFiS3 library
+- ThingSpeak library
+
+### Instructions:
+1. Install the required libraries using the Arduino Library Manager.
+2. Open the Arduino sketch (`HealthSensorArduinoCode.ino`) in the Arduino IDE.
+3. Replace placeholders in the code with your WiFi credentials, ThingSpeak API key, and channel ID.
+4. Upload the code to your Arduino board.
+
+## Android App
+
+### Requirements:
+- Android Studio
+- MongoDB Java Driver
+
+### Instructions:
+1. Open the Android project in Android Studio.
+2. Add the MongoDB Java Driver dependency to the `build.gradle` file.
+3. Update the `mongodb_uri` variable in the Python script with your MongoDB connection string.
+4. Build and run the Android app on your device.
+
+## Python Script (MongoDB Integration)
+
+### Requirements:
+- Python 3
+- pymongo library
+- requests library
+
+### Instructions:
+1. Install the required Python libraries using `pip install pymongo requests`.
+2. Update the `thingspeak_channel_id` and `thingspeak_read_api_key` variables with your ThingSpeak details.
+3. Update the `mongodb_uri` variable with your MongoDB connection string.
+4. Run the Python script (`mongo_integration.py`).
+
+## Directory Structure:
+- **ArduinoCode:** Contains the Arduino sketch for MAX30100 sensor data and ThingSpeak integration.
+- **AndroidApp:** Includes the Android app for health data visualization.
+- **MongoDBIntegration:** Contains the Python script for fetching data from ThingSpeak and storing it in MongoDB.
+
+Feel free to contribute and enhance the functionality of the project. If you encounter any issues or have suggestions, please create an issue in the repository.
